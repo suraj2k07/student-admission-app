@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Admission Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Admission Form</h1>
+        <form id="admissionForm">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required min="10" max="100">
+
+            <label for="course">Course Applying For:</label>
+            <input type="text" id="course" name="course" required>
+
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10}" placeholder="e.g., 1234567890" required>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" rows="4" required></textarea>
+
+            <button type="submit">Submit Admission</button>
+        </form>
+        <p><a href="view.html">View All Submissions</a></p>
+    </div>
+
+    <script>
+        document.getElementById('admissionForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                age: parseInt(document.getElementById('age').value),
+                course: document.getElementById('course').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                address: document.getElementById('address').value
+            };
+
+            // **IMPORTANT: Replace this with your actual backend URL after deployment**
+            const backendUrl = 'http://127.0.0.1:5000'; // For local testing
+            // const backendUrl = 'YOUR_DEPLOYED_BACKEND_URL'; // For deployed version
+
+            try {
+                const response = await fetch(`${backendUrl}/submit`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(result.message);
+                    document.getElementById('admissionForm').reset(); // Clear the form
+                } else {
+                    alert(`Error: ${result.error || 'Something went wrong.'}`);
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('An error occurred during submission. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

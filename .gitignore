@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python/
+env/
+venv/
+.env
+
+# Flask specific
+instance/
+.flaskenv
+
+# JSON data file
+backend/students.json
+
+# Logs
+*.log
+
+# IDE and OS specific files
+.vscode/
+.idea/
+.DS_Store    # macOS specific
+Thumbs.db    # Windows specific
+ehthumbs.db  # Windows specific
+
+# If you were to use npm/yarn for frontend dependencies (less likely for this simple project)
+node_modules/
