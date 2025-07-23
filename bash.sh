@@ -1,1 +1,2 @@
-touch .gitignore
+
+git push -u origin main
