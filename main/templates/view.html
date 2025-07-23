@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Submissions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>All Student Submissions</h1>
+        <p><a href="/">Go back to Admission Form</a></p>
+
+        <button type="button" id="clearAllBtn" class="clear-all-button">Clear All Submissions</button>
+        <table id="studentsTable">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Course</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+        <p id="noStudentsMessage" style="display: none; text-align: center;">No student admissions found yet.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const backendUrl = 'http://127.0.0.1:5000'; 
+
+            const studentsTableBody = document.querySelector('#studentsTable tbody');
+            const noStudentsMessage = document.getElementById('noStudentsMessage');
+
+            async function fetchStudents() {
+                try {
+                    const response = await fetch(`${backendUrl}/students`);
+                    const students = await response.json();
+
+                    studentsTableBody.innerHTML = ''; 
+                    if (response.ok && students.length > 0) {
+                        students.forEach(student => {
+                            const row = studentsTableBody.insertRow();
+                            row.insertCell().textContent = student.fullName;
+                            row.insertCell().textContent = student.email;
+                            row.insertCell().textContent = student.age;
+                            row.insertCell().textContent = student.course;
+                            row.insertCell().textContent = student.phoneNumber;
+                            row.insertCell().textContent = student.address;
+                        });
+                        document.getElementById('studentsTable').style.display = 'table';
+                        noStudentsMessage.style.display = 'none';
+                    } else {
+                        document.getElementById('studentsTable').style.display = 'none';
+                        noStudentsMessage.style.display = 'block';
+                        noStudentsMessage.textContent = 'No student admissions found yet.';
+                    }
+                } catch (error) {
+                    console.error('Error fetching students:', error);
+                    alert('An error occurred while fetching student data. Please ensure the backend is running.');
+                    document.getElementById('studentsTable').style.display = 'none';
+                    noStudentsMessage.style.display = 'block';
+                    noStudentsMessage.textContent = 'Failed to load student data. Please try again later.';
+                }
+            }
+
+            fetchStudents();
+
+            document.getElementById('clearAllBtn').addEventListener('click', async function() {
+                if (confirm('Are you sure you want to clear ALL student submissions? This action cannot be undone.')) {
+                    try {
+                        const response = await fetch(`${backendUrl}/clear_all_submissions`, {
+                            method: 'DELETE' // 
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            alert(result.message);
+                            fetchStudents(); 
+                        } else {
+                            alert(`Error clearing submissions: ${result.error || 'Something went wrong.'}`);
+                        }
+                    } catch (error) {
+                        console.error('Error clearing submissions:', error);
+                        alert('An error occurred while trying to clear submissions. Please try again.');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

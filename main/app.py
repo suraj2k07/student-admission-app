@@ -1,17 +1,24 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template 
 from flask_cors import CORS
 import json
 import os
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all origins
+CORS(app) 
 
 DATA_FILE = 'students.json'
 
-# Initialize the JSON file if it doesn't exist
 if not os.path.exists(DATA_FILE):
     with open(DATA_FILE, 'w') as f:
         json.dump([], f)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/view')
+def view():
+    return render_template('view.html')
 
 @app.route('/submit', methods=['POST'])
 def submit_student():
@@ -23,7 +30,7 @@ def submit_student():
         with open(DATA_FILE, 'r+') as f:
             students = json.load(f)
             students.append(data)
-            f.seek(0)  # Rewind to the beginning of the file
+            f.seek(0) 
             json.dump(students, f, indent=4)
         return jsonify({"message": "Student data submitted successfully!"}), 201
     except Exception as e:
@@ -36,7 +43,15 @@ def get_students():
             students = json.load(f)
         return jsonify(students), 200
     except FileNotFoundError:
-        return jsonify([]), 200 # Return empty list if file doesn't exist yet
+        return jsonify([]), 200 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+@app.route('/clear_all_submissions', methods=['DELETE'])
+def clear_all_submissions():
+    try:
+        with open(DATA_FILE, 'w') as f:
+            json.dump([], f) 
+        return jsonify({"message": "All student submissions cleared successfully!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

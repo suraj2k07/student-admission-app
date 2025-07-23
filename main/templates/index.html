@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Admission Form</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
@@ -28,9 +28,11 @@
             <label for="address">Address:</label>
             <textarea id="address" name="address" rows="4" required></textarea>
 
-            <button type="submit">Submit Admission</button>
+            <div class="button-group"> <button type="submit" class="submit-button">Submit Admission</button>
+                <button type="button" id="clearFormBtn" class="clear-button">Clear Form</button>
+            </div>
         </form>
-        <p><a href="view.html">View All Submissions</a></p>
+        <p><a href="/view">View All Submissions</a></p>
     </div>
 
     <script>
@@ -46,9 +48,7 @@
                 address: document.getElementById('address').value
             };
 
-            // **IMPORTANT: Replace this with your actual backend URL after deployment**
-            const backendUrl = 'http://127.0.0.1:5000'; // For local testing
-            // const backendUrl = 'YOUR_DEPLOYED_BACKEND_URL'; // For deployed version
+            const backendUrl = 'http://127.0.0.1:5000'; 
 
             try {
                 const response = await fetch(`${backendUrl}/submit`, {
@@ -63,7 +63,7 @@
 
                 if (response.ok) {
                     alert(result.message);
-                    document.getElementById('admissionForm').reset(); // Clear the form
+                    document.getElementById('admissionForm').reset();
                 } else {
                     alert(`Error: ${result.error || 'Something went wrong.'}`);
                 }
@@ -71,6 +71,11 @@
                 console.error('Submission error:', error);
                 alert('An error occurred during submission. Please try again.');
             }
+        });
+
+        document.getElementById('clearFormBtn').addEventListener('click', function() {
+            document.getElementById('admissionForm').reset();
+            alert('Form cleared!');
         });
     </script>
 </body>
