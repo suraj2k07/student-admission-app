@@ -51,7 +51,6 @@ Follow these steps to set up and run the application on your local machine:
 
 If you're starting fresh or pulling to a new machine:
 
-```bash
 git clone [https://github.com/suraj2k07/student-admission-app.git]
 cd student-admission-app\
 
