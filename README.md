@@ -30,100 +30,63 @@ To provide a simple, full-stack web application that allows users to:
 * **Clear All Submissions**: A button on the view page to delete all stored student records via a `DELETE` API request (with confirmation).
 * **CORS Enabled**: Flask backend includes Flask-CORS to handle cross-origin requests, though less critical when Flask serves the frontend.
 
-## 📁 Project Structure
-├── main/                   # Your main application directory (formerly 'backend')
-│   ├── app.py              # Main Flask application file with routes and API endpoints
-│   ├── students.json       # JSON file for storing student data
-│   ├── requirements.txt    # Python dependencies for the project
-│   ├── static/             # Static files (CSS, JS, images) served by Flask
-│   │   └── style.css
-│   └── templates/          # HTML template files served by Flask
-│       ├── index.html      # Admission form page
-│       └── view.html       # Student submissions viewing page
-├── .gitignore              # Specifies files/directories to be ignored by Git
-└── README.md               # This README file
+## 🚀 How to Access the Deployed Application
 
-## 🚀 How to Run Locally
+This application is deployed on Render.com and can be accessed via the following public URL.
 
-Follow these steps to set up and run the application on your local machine:
+### 1. Application URL
 
-1. Clone the Repository (if you haven't already)
+Access the main application page using this link:
 
-If you're starting fresh or pulling to a new machine:
+**[https://student-admission-app.onrender.com/](https://student-admission-app.onrender.com/)**
 
-git clone [https://github.com/suraj2k07/student-admission-app.git]
-cd student-admission-app\
+*(Replace `https://student-admission-app.onrender.com/` with your actual deployed URL if it's different).*
 
-2. Navigate to the Application Directory
+### 2. Usage Instructions
 
-The core application files are within the main/ directory.
+* **Admission Form**: Fill out the fields and click "Submit Admission".
+* **Clear Form**: Click "Clear Form" to reset the current form's fields.
+* **View All Submissions**: Click the "View All Submissions" link (or go directly to `https://student-admission-app.onrender.com/view`) to see all stored student entries.
+* **Clear All Submissions**: On the "View All Submissions" page, click "Clear All Submissions" to remove all records (requires confirmation).
 
-3. Set Up a Python Virtual Environment (Recommended)
+## 🌐 Deployment to Render.com
 
-It's good practice to use a virtual environment to manage dependencies
-
-4. Install Dependencies
-
-Install the required Python packages listed in requirements.txt.
-
-5. Run the Flask Application
-
-Start the Flask development server.
-
-You should see output indicating that the Flask app is running, typically on http://127.0.0.1:5000/.
-
-6. Access the Application
-Open your web browser and go to:
-
-Admission Form: http://127.0.0.1:5000/
-
-View Submissions: http://127.0.0.1:5000/view
-
-🌐 Deployment to Render.com
 This application is set up for deployment as a single web service on a platform like Render, where Flask serves all components (frontend and backend).
 
-1. Prepare for Deployment
-Ensure your requirements.txt file (located in main/) is up-to-date and contains Flask, Flask-Cors, and gunicorn.
+### 1. Prepare for Deployment
 
-Ensure all local changes are committed and pushed to your GitHub repository.
+* Ensure your `requirements.txt` file (located in `main/`) is up-to-date and contains `Flask`, `Flask-Cors`, and `gunicorn`.
+* Ensure all local changes are committed and pushed to your GitHub repository.
 
-Bash
+    ```bash
+    # (From project root: student-admission-app/)
+    git add .
+    git commit -m "Prepare for Render deployment: update requirements.txt"
+    git push -u origin main
+    ```
 
-# (From project root: student-admission-app/)
-git add .
-git commit -m "Prepare for Render deployment: update requirements.txt"
-git push -u origin main
-2. Deploy on Render.com
-Sign up/Login to Render: Go to https://render.com/ and log in (GitHub login is an option).
+### 2. Deploy on Render.com
 
-New Web Service: Click "New" > "Web Service".
-
-Connect GitHub: Connect your GitHub account and select the suraj2k07/student-admission-app repository.
-
-Configure Service:
-
-Service Name: Choose a unique name (e.g., suraj-admission-app-live).
-
-Root Directory: Set this to main/ (important, as your app.py is inside main/).
-
-Runtime: Select Python 3.
-
-Build Command: pip install -r requirements.txt
-
-Start Command: gunicorn app:app (This tells Render to run your app Flask instance from app.py using Gunicorn).
-
-Plan: Select Free (for testing, be aware of ephemeral storage for students.json).
-
-Region: Choose your preferred region.
-
-Create Web Service: Click the button to initiate deployment.
+1.  **Sign up/Login to Render**: Go to [https://render.com/](https://render.com/) and log in (GitHub login is an option).
+2.  **New Web Service**: Click **"New"** > **"Web Service"**.
+3.  **Connect GitHub**: Connect your GitHub account and select the `suraj2k07/student-admission-app` repository.
+4.  **Configure Service**:
+    * **Service Name**: Choose a unique name (e.g., `suraj-admission-app-live`).
+    * **Root Directory**: Set this to `main/` (important, as your `app.py` is inside `main/`).
+    * **Runtime**: Select `Python 3`.
+    * **Build Command**: `pip install -r requirements.txt`
+    * **Start Command**: `gunicorn app:app` (This tells Render to run your `app` Flask instance from `app.py` using Gunicorn).
+    * **Plan**: Select `Free` (for testing, be aware of ephemeral storage for `students.json`).
+    * **Region**: Choose your preferred region.
+5.  **Create Web Service**: Click the button to initiate deployment.
 
 Render will now clone your repository, install dependencies, and start your Flask application. You can monitor the build logs directly on the Render dashboard.
 
-3. Access the Deployed Application
-Once the deployment is successful, Render will provide a public URL (e.g., https://your-service-name.onrender.com). Open this URL in your browser to access your live application.
+### 3. Access the Deployed Application
 
-⚠️ Important Notes on Deployment
-Data Persistence: On Render's free tier, the students.json file where data is stored is ephemeral. This means any data you submit will be lost if the server restarts or goes to sleep due to inactivity. For a production application requiring persistent data, you would integrate a robust database like PostgreSQL (Render offers a free tier for PostgreSQL databases).
+Once the deployment is successful, Render will provide a public URL (e.g., `https://your-service-name.onrender.com`). Open this URL in your browser to access your live application.
 
-Local vs. Deployed URLs: Your frontend JavaScript now uses relative paths (e.g., /submit, /students) because Flask serves both frontend and backend. This means the same code works seamlessly whether run locally via http://127.0.0.1:5000 or deployed to Render's public URL.
+## ⚠️ Important Notes on Deployment
+
+* **Data Persistence**: On Render's free tier, the `students.json` file where data is stored is **ephemeral**. This means any data you submit will be lost if the server restarts or goes to sleep due to inactivity. For a production application requiring persistent data, you would integrate a robust database like PostgreSQL (Render offers a free tier for PostgreSQL databases).
+* **Local vs. Deployed URLs**: Your frontend JavaScript now uses relative paths (e.g., `/submit`, `/students`) because Flask serves both frontend and backend. This means the same code works seamlessly whether run locally via `http://127.0.0.1:5000` or deployed to Render's public URL.
