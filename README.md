@@ -86,7 +86,4 @@ Render will now clone your repository, install dependencies, and start your Flas
 
 Once the deployment is successful, Render will provide a public URL (e.g., `https://your-service-name.onrender.com`). Open this URL in your browser to access your live application.
 
-## ⚠️ Important Notes on Deployment
-
-* **Data Persistence**: On Render's free tier, the `students.json` file where data is stored is **ephemeral**. This means any data you submit will be lost if the server restarts or goes to sleep due to inactivity. For a production application requiring persistent data, you would integrate a robust database like PostgreSQL (Render offers a free tier for PostgreSQL databases).
-* **Local vs. Deployed URLs**: Your frontend JavaScript now uses relative paths (e.g., `/submit`, `/students`) because Flask serves both frontend and backend. This means the same code works seamlessly whether run locally via `http://127.0.0.1:5000` or deployed to Render's public URL.
+NOTE: If you want to run locally, change the backend url in html documents under script to your local url.
